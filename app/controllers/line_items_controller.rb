@@ -52,21 +52,26 @@ class LineItemsController < ApplicationController
 
   # DELETE /line_items/1 or /line_items/1.json
   def destroy
-    @line_item.destroy
+    if @line_item.quantity >= 2
+      @line_item.quantity -= 1
+      @line_item.save
+    else
+      @line_item.destroy
+    end
     respond_to do |format|
-      format.html { redirect_to line_items_url, notice: "Line item was successfully destroyed." }
+      format.html { redirect_to @line_item.cart, notice: "Line item was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_line_item
-      @line_item = LineItem.find(params[:id])
-    end
+  def set_line_item
+    @line_item = LineItem.find(params[:id])
+  end
 
     # Only allow a list of trusted parameters through.
-    def line_item_params
-      params.require(:line_item).permit(:product_id)
-    end
+  def line_item_params
+    params.require(:line_item).permit(:product_id)
+  end
 end
