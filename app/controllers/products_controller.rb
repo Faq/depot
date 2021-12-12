@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+  require 'nokogiri'
   before_action :set_product, only: %i[ show edit update destroy ]
 
   # GET /products or /products.json
@@ -64,22 +65,44 @@ class ProductsController < ApplicationController
   def who_bought
     @product = Product.find(params[:id])
     @latest_order = @product.orders.order(:updated_at).last
+    builder = Nokogiri::XML::Builder.new do |xml|
+      xml.product do
+        xml.title @product.title
+        xml.description @product.description
+        xml.price @product.price
+        xml.image @product.image_url
+        xml.orders do
+          @product.orders.each do |order|
+            xml.order do
+              xml.name order.name
+              xml.address order.address
+              xml.email order.email
+              xml.pay_type order.pay_type
+              xml.created_at order.created_at
+            end
+          end
+        end
+      end
+    end
     if stale?(@latest_order)
       respond_to do |format|
         format.atom
+        #format.html { render xml: @product.to_xml(include: :orders) }
+        format.html { render xml: builder }
         format.json { render json: @product.to_json(include: :orders) }
       end
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_product
-      @product = Product.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def product_params
-      params.require(:product).permit(:title, :description, :image_url, :price)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_product
+    @product = Product.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def product_params
+    params.require(:product).permit(:title, :description, :image_url, :price)
+  end
 end
