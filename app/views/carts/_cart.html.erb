@@ -15,7 +15,9 @@
     </table>
 
   <div class="actions">
-    <%= button_to 'Empty cart', cart, method: :delete, data: { confirm: "Are you sure?" }, remote: true %>
+    <% if not @hide_checkout_button %>
     <%= button_to 'Checkout', new_order_path, method: :get, class: "checkout" %>
+    <% end %>
+    <%= button_to 'Empty cart', cart, method: :delete, data: { confirm: "Are you sure?" }, remote: true %>
   </div>
 </article>
