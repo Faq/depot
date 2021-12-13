@@ -26,6 +26,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 gem 'activerecord-postgres_enum'
+gem 'good_migrations'
 gem 'nokogiri', '~> 1.8.1'
 
 
