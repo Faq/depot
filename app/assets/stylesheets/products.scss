@@ -58,16 +58,3 @@
     }
   }
 }
-
-@keyframes line-item-highlight {
-  0% {
-    background: #bf0d0d;
-  }
-  100% {
-    background: none;
-  }
-}
-
-.line-item-highlight {
-  animation: line-item-highlight 2s;
-}
