@@ -8,8 +8,6 @@ class OrderMailer < ApplicationMailer
   def received(order)
     @order = order
 
-    @greeting = "Hi"
-
     mail to: order.email, subject: 'Pragmatic Store Order Confirmation'
   end
 
@@ -20,8 +18,6 @@ class OrderMailer < ApplicationMailer
   #
   def shipped(order)
     @order = order
-
-    @greeting = "Hi"
 
     mail to: order.email, subject: 'Pragmatic Store Order Shipped'
   end
