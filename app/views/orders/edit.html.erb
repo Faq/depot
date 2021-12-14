@@ -1,7 +1,9 @@
-<h1>Editing Order</h1>
+<section class="depot_form">
+  <h1>Editing Order</h1>
+  <%= render 'form', order: @order %>
+</section>
 
-<%= render 'form', order: @order %>
 <%= javascript_pack_tag("pay_type") %>
-
 <%= link_to 'Show', @order %> |
 <%= link_to 'Back', orders_path %>
+
