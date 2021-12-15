@@ -1,3 +1,6 @@
+require 'pago'
+require 'ostruct'
+
 class Order < ApplicationRecord
   has_many :line_items, dependent: :destroy
 
@@ -38,10 +41,9 @@ class Order < ApplicationRecord
     end
 
     payment_result = Pago.make_payment(
-      order_id: id,
+      order_id: :id,
       payment_method: payment_method,
-      payment_details: payment_details
-    )
+      payment_details: payment_details)
 
     if payment_result.succeeded?
       OrderMailer.received(self).deliver_later
