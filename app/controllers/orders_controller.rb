@@ -3,6 +3,7 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: %i[new create]
   before_action :ensure_cart_isnt_empty, only: :new
   before_action :set_order, only: %i[show edit update destroy]
+  skip_before_action :authorize, only: %i[create new]
 
   # GET /orders or /orders.json
   def index
@@ -44,6 +45,7 @@ class OrdersController < ApplicationController
 
   # PATCH/PUT /orders/1 or /orders/1.json
   def update
+    @order.ship_date = Date.tomorrow
     respond_to do |format|
       if @order.update(order_params)
         format.html { redirect_to @order, notice: "Order was successfully updated." }
@@ -53,6 +55,10 @@ class OrdersController < ApplicationController
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def send_email_to_customer
+    OrderMailer.with(order: self).order_shipped.deliver_now
   end
 
   # DELETE /orders/1 or /orders/1.json
