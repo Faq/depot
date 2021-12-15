@@ -1,10 +1,24 @@
 <p>
-  Hello,<%= @order.name %>
+  Hello, <%= @order.name %>
 </p>
 <p>
   Thank you for your recent order from The Pragmatic Store.
   You ordered the following items:
-  <%= render @order.line_items %>
-
+<table>
+  <tr>
+    <th colspan="1">Qty</th>
+    <th>Description</th>
+    <th>Price</th>
+  </tr>
+  <% @order.line_items.each do |item| %>
+  <tr>
+    <td><%= item.quantity %></td>
+    <td><%= item.product.title %></td>
+    <td><%= item.product.price %></td>
+  </tr>
+  <% end %>
+</table>
+</p>
+<p>
   We'll send you a separate email when your order ships.
 </p>
