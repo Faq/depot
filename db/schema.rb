@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_11_164551) do
+ActiveRecord::Schema.define(version: 2021_12_14_190419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_enum :rate_type, [
+    "check",
+    "credit_card",
+    "purchase_order",
+  ], force: :cascade
 
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -39,6 +45,7 @@ ActiveRecord::Schema.define(version: 2021_12_11_164551) do
     t.integer "pay_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.date "ship_date"
   end
 
   create_table "products", force: :cascade do |t|
